@@ -57,7 +57,7 @@ public class NmapService {
 				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln -oN salida2.txt " + domain));
 				break;
 			}
-			case "service&so":{
+			case "serviceso":{
 				nmap.setScriptId("serviceso");
 				nmap.setScriptDescription("Escaneo de servicios y sistema operativo");
 				nmap.setResultado(scriptService.processScript("nmap -A -oN salida3.txt " + domain));
