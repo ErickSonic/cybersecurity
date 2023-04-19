@@ -47,8 +47,8 @@ public class NmapService {
 			case "tcp":{
 				nmap.setScriptId("tcp");
 				nmap.setScriptDescription("Escaneo de puertos TCP");
-				nmap.setResultado(scriptService.processScript("ping -n 3 " + domain));
-				//nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 -oN archivo_salida.txt um.edu.mx"));
+				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 -oN archivo_salida.txt um.edu.mx"));
+				//nmap.setResultado(scriptService.processScript("ping -n 3 " + domain));
 				break;
 			}
 			case "vulnerabilities":{
@@ -58,7 +58,7 @@ public class NmapService {
 				break;
 			}
 			case "service&so":{
-				nmap.setScriptId("service&so");
+				nmap.setScriptId("serviceso");
 				nmap.setScriptDescription("Escaneo de servicios y sistema operativo");
 				nmap.setResultado(scriptService.processScript("nmap -A -oN salida3.txt " + domain));
 				break;
