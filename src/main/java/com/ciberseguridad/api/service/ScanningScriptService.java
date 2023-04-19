@@ -13,7 +13,7 @@ public class ScanningScriptService {
         ProcessBuilder processBuilder = new ProcessBuilder();
         
 	    //processBuilder.command("cmd.exe", "/c", script);
-	    processBuilder.command("sh", "-c", "ls");
+	    processBuilder.command("bash", "-c", script);
 	
 	    try {
 	
