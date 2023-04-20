@@ -47,32 +47,32 @@ public class NmapService {
 			case "tcp":{
 				nmap.setScriptId("tcp");
 				nmap.setScriptDescription("Escaneo de puertos TCP");
-				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 -oN archivo_salida.txt um.edu.mx"));
+				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + domain));
 				//nmap.setResultado(scriptService.processScript("ping -n 3 " + domain));
 				break;
 			}
 			case "vulnerabilities":{
 				nmap.setScriptId("vulnerabilities");
-				nmap.setScriptDescription("Escaneo de puertos vulnerabilidades");
-				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln -oN salida2.txt " + domain));
+				nmap.setScriptDescription("Escaneo de vulnerabilidades");
+				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln " + domain));
 				break;
 			}
 			case "serviceso":{
 				nmap.setScriptId("serviceso");
 				nmap.setScriptDescription("Escaneo de servicios y sistema operativo");
-				nmap.setResultado(scriptService.processScript("nmap -A -oN salida3.txt " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -A " + domain));
 				break;
 			}
 			case "udp":{
 				nmap.setScriptId("udp");
 				nmap.setScriptDescription("Escaneo de puertos UDP");
-				nmap.setResultado(scriptService.processScript("nmap -sU -oN salida4.txt " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -sU " + domain));
 				break;
 			}
 			case "internalN":{
 				nmap.setScriptId("internalN");
 				nmap.setScriptDescription("Escaneo de red interna");
-				nmap.setResultado(scriptService.processScript("nmap -sn -oN salida5.txt " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -sn " + domain));
 				break;
 			}
 		}
