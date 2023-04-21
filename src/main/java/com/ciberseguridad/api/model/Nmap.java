@@ -7,14 +7,13 @@ import lombok.Data;
 
 @Document(collection = "nmap")
 @Data
-public class Nmap {
+public abstract class Nmap {
 	
 	@Id
 	private String id;
 	private String scriptId;
 	private String scriptDescription;
 	private String resultado;
-	
 	
 	public String getId() {
 		return id;

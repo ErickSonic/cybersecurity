@@ -70,4 +70,7 @@ public class NmapController {
 		nmapService.deleteById(id);
 		return ResponseEntity.ok(nmapService.findAll());
 	}
+	
+	@GetMapping("/test")
+	private ResponseEntity<>
 }
