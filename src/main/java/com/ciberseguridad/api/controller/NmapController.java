@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ciberseguridad.api.model.Nmap;
+import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.service.NmapService;
 
 @RestController
@@ -56,9 +57,9 @@ public class NmapController {
 	}
 	
 	@PostMapping(params = "scriptId")
-	private ResponseEntity<Nmap> saveScan(@RequestParam String scriptId, @RequestBody String domain) {
+	private ResponseEntity<Nmap> saveScan(@RequestParam String scriptId, @RequestBody RequestModel req) {
 		try {
-			Nmap nmapSaved = nmapService.saveScan(scriptId, domain);
+			Nmap nmapSaved = nmapService.saveScan(scriptId, req);
 			return ResponseEntity.created(new URI("/api/nmap/" + nmapSaved.getId())).body(nmapSaved);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ciberseguridad.api.model.Nmap;
+import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.repository.NmapRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -41,38 +42,38 @@ public class NmapService {
 		nmapRepository.deleteById(id);
 	}
 	
-	public Nmap saveScan(String scanType, String domain) throws IOException {
+	public Nmap saveScan(String scanType, RequestModel req) throws IOException {
 		Nmap nmap = new Nmap();
 		switch(scanType) {
 			case "tcp":{
 				nmap.setScriptId("tcp");
 				nmap.setScriptDescription("Escaneo de puertos TCP");
-				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + domain));
-				//nmap.setResultado(scriptService.processScript("ping -n 3 " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + req.getDomain()));
+				//nmap.setResultado(scriptService.processScript("ping -n 3 " + req.getDomain()));
 				break;
 			}
 			case "vulnerabilities":{
 				nmap.setScriptId("vulnerabilities");
 				nmap.setScriptDescription("Escaneo de vulnerabilidades");
-				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln " + req.getDomain()));
 				break;
 			}
 			case "serviceso":{
 				nmap.setScriptId("serviceso");
 				nmap.setScriptDescription("Escaneo de servicios y sistema operativo");
-				nmap.setResultado(scriptService.processScript("nmap -A " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -A " + req.getDomain()));
 				break;
 			}
 			case "udp":{
 				nmap.setScriptId("udp");
 				nmap.setScriptDescription("Escaneo de puertos UDP");
-				nmap.setResultado(scriptService.processScript("nmap -sU " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -sU " + req.getDomain()));
 				break;
 			}
 			case "internalN":{
 				nmap.setScriptId("internalN");
 				nmap.setScriptDescription("Escaneo de red interna");
-				nmap.setResultado(scriptService.processScript("nmap -sn " + domain));
+				nmap.setResultado(scriptService.processScript("nmap -sn " + req.getDomain()));
 				break;
 			}
 		}
