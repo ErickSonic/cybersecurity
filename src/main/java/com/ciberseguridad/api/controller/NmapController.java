@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ciberseguridad.api.model.Nmap;
+import com.ciberseguridad.api.model.NmapVulnerabilities;
 import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.service.NmapService;
 

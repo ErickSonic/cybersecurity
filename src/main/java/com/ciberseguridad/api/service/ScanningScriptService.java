@@ -12,8 +12,8 @@ public class ScanningScriptService {
 	public String processScript(String script) throws IOException{
         ProcessBuilder processBuilder = new ProcessBuilder();
         
-	    //processBuilder.command("cmd.exe", "/c", script);
-	    processBuilder.command("bash", "-c", script);
+	    processBuilder.command("cmd.exe", "/c", script);
+	    //processBuilder.command("bash", "-c", script);
 	
 	    try {
 	
@@ -26,7 +26,7 @@ public class ScanningScriptService {
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
-	            output.append(line);
+	            output.append(line + System.getProperty("line.separator"));
 	        }
 	
 	        return output.toString();
