@@ -42,8 +42,8 @@ public class NmapScanningScriptService {
 	}
 	
 	public HashMap<String,List<HashMap<String,String>>> processVulnerabilitiesScript(String script) throws IOException{
-		processBuilder.command("cmd.exe", "/c", script);
-	    //processBuilder.command("bash", "-c", script);
+		//processBuilder.command("cmd.exe", "/c", script);
+	    processBuilder.command("bash", "-c", script);
 	
 	    try {
 	
