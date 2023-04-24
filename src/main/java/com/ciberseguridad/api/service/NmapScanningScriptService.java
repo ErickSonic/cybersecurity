@@ -12,10 +12,10 @@ import java.io.IOException;
 
 @Service
 public class NmapScanningScriptService {
-	ProcessBuilder processBuilder = new ProcessBuilder();
 	
 	public String processScript(String script) throws IOException{
-        
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		
 	    //processBuilder.command("cmd.exe", "/c", script);
 	    processBuilder.command("bash", "-c", script);
 	
@@ -42,6 +42,8 @@ public class NmapScanningScriptService {
 	}
 	
 	public HashMap<String,List<HashMap<String,String>>> processVulnerabilitiesScript(String script) throws IOException{
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		
 		//processBuilder.command("cmd.exe", "/c", script);
 	    processBuilder.command("bash", "-c", script);
 	
