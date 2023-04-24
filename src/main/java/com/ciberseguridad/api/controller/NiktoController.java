@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ciberseguridad.api.model.Nikto;
+import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.service.NiktoService;
 
 @RestController
@@ -55,9 +56,9 @@ public class NiktoController {
 	}
 	
 	@PostMapping(params = "scriptId")
-	private ResponseEntity<Nikto> saveScan(@RequestParam String scriptId, @RequestBody String domain) {
+	private ResponseEntity<Nikto> saveScan(@RequestParam String scriptId, @RequestBody RequestModel req) {
 		try {
-			Nikto niktoSaved = niktoService.saveScan(scriptId, domain);
+			Nikto niktoSaved = niktoService.saveScan(scriptId, req);
 			return ResponseEntity.created(new URI("/api/nikto/" + niktoSaved.getId())).body(niktoSaved);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

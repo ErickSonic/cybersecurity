@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ciberseguridad.api.model.Nikto;
+import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.repository.NiktoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,31 +43,31 @@ public class NiktoService {
 		niktoRepository.deleteById(id);
 	}
 	
-	public Nikto saveScan(String scanType, String domain) throws IOException {
+	public Nikto saveScan(String scanType, RequestModel req) throws IOException {
 		Nikto nikto = new Nikto();
 		switch(scanType) {
 			case "webServer":{
 				nikto.setScriptId("webServer");
 				nikto.setScriptDescription("Escaneo de vulnerabilidades en servidor web");
-				nikto.setResultado(scriptService.processScript("nikto -h " + domain));
+				nikto.setResultado(scriptService.processScript("nikto -h " + req.getDomain()));
 				break;
 			}
 			case "ssl":{
 				nikto.setScriptId("ssl");
 				nikto.setScriptDescription("Escaneo de vulnerabilidades en servidor web SSL");
-				nikto.setResultado(scriptService.processScript("nikto -h " + domain + " -ssl"));
+				nikto.setResultado(scriptService.processScript("nikto -h " + req.getDomain() + " -ssl"));
 				break;
 			}
 			case "autenticacion":{
 				nikto.setScriptId("autentication");
 				nikto.setScriptDescription("Escaneo de vulnerabilidades en servidor web usando autenticación");
-				nikto.setResultado(scriptService.processScript("nikto -h " + domain + " -id admin:password"));
+				nikto.setResultado(scriptService.processScript("nikto -h " + req.getDomain() + " -id admin:password"));
 				break;
 			}
 			case "proxy":{
 				nikto.setScriptId("proxy");
 				nikto.setScriptDescription("Escaneo de vulnerabilidades en servidor web usando proxyP");
-				nikto.setResultado(scriptService.processScript("nikto -h " + domain + " -useproxy http://proxy.example.com:8080"));
+				nikto.setResultado(scriptService.processScript("nikto -h " + req.getDomain() + " -useproxy http://proxy.example.com:8080"));
 				break;
 			}
 		}
