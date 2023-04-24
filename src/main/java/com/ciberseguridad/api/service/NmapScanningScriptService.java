@@ -62,7 +62,7 @@ public class NmapScanningScriptService {
 	        	if(line.contains("CVE-")) {
 	        		String substrings[] = line.split(" ");
 	        		for(int i = 0; i<substrings.length; i++){
-						if(substrings[i].contains("CVE-") && !substrings[i].contains("/CVE-")) {
+						if(substrings[i].contains("CVE-") && !substrings[i].contains("/CVE-") && (i+4<substrings.length)) {
 							map.put("id", substrings[i]);
 							map.put("evaluation", substrings[i+4]);
 							list.add(map);
