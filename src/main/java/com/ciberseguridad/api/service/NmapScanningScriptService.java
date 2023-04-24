@@ -16,8 +16,8 @@ public class NmapScanningScriptService {
 	
 	public String processScript(String script) throws IOException{
         
-	    processBuilder.command("cmd.exe", "/c", script);
-	    //processBuilder.command("bash", "-c", script);
+	    //processBuilder.command("cmd.exe", "/c", script);
+	    processBuilder.command("bash", "-c", script);
 	
 	    try {
 	
