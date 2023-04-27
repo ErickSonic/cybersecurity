@@ -73,7 +73,7 @@ public class NmapScanningScriptService {
 	        		String substrings[] = line.split(" ");
 		            for(String i: substrings){
 	                    if(i.contains("/tcp")){
-	                        if(!vulnerabilities.isEmpty()) {
+	                        if(!(portId.equals(""))) {
 	                        	vulnerabilities.put(portId,list);
 	                        	list = new ArrayList<HashMap<String,String>>();
 	                        	map = new HashMap<String, String>();
