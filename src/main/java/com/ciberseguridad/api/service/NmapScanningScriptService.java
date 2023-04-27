@@ -54,7 +54,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        						break;
 	        					}
 	        					case 3:{
-	        						versionFeatures += feature;
+	        						versionFeatures += feature + " ";
 	        						break;
 	        					}
 	        				}
