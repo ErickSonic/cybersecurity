@@ -34,6 +34,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        	if(line.contains("/tcp")) {
 	        		String featuresArr[] = line.split(" ");
 	        		int iter = 0;
+	        		String versionFeatures = "";
 	        		for(String feature: featuresArr) {
 	        			if(!(feature == "")) {
 	        				switch(iter) {
@@ -53,13 +54,13 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        						break;
 	        					}
 	        					case 3:{
-	        						map.put("version", feature);
-	        						iter++;
+	        						versionFeatures += feature;
 	        						break;
 	        					}
 	        				}
 	        			}
 	        		}
+	        		map.put("version", versionFeatures);
 	        		ports.add(map);
 	        		map = new HashMap<String, String>();
 	        	}
