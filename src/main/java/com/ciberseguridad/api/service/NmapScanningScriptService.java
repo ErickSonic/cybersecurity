@@ -61,6 +61,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        			}
 	        		}
 	        		ports.add(map);
+	        		map = new HashMap<String, String>();
 	        	}
 	        }
 	        return ports;
