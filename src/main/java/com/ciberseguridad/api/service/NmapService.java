@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ciberseguridad.api.model.Nmap;
+import com.ciberseguridad.api.model.NmapPorts;
 import com.ciberseguridad.api.model.NmapVulnerabilities;
 import com.ciberseguridad.api.model.RequestModel;
 import com.ciberseguridad.api.repository.NmapRepository;
@@ -48,13 +49,14 @@ public class NmapService {
 	
 	public Nmap saveScan(String scanType, RequestModel req) throws IOException {
 		switch(scanType) {
-//			case "tcp":{
-//				nmap = new NmapVulnerabilities();
-//				nmap.setScriptId("tcp");
-//				nmap.setScriptDescription("Escaneo de puertos TCP");
-//				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + req.getDomain()));
-//				break;
-//			}
+			case "tcp":{
+				NmapPorts nmap = new NmapPorts();
+				nmap.setScriptId("tcp");
+				nmap.setScriptDescription("Escaneo de puertos TCP");
+				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + req.getDomain()));
+				nmap.setPorts(scriptService.processTCPPortScript("nmap -sS -sV -T4 " + req.getDomain()));
+				return nmapRepository.save(nmap);
+			}
 			case "vulnerabilities":{
 				NmapVulnerabilities nmap = new NmapVulnerabilities();
 				nmap.setScriptId("vulnerabilities");
@@ -62,19 +64,6 @@ public class NmapService {
 				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln " + req.getDomain()));
 				nmap.setVulnerabilities(scriptService.processVulnerabilitiesScript("nmap -Pn -sV --script vuln " + req.getDomain()));
 //				nmap.setResultado(scriptService.processScript("ping -n 3 " + req.getDomain()));
-//				HashMap<String,List<HashMap<String,String>>> vuln = new HashMap<String,List<HashMap<String,String>>>();
-//				List<HashMap<String,String>> list = Collections.synchronizedList(new ArrayList<HashMap<String,String>>());
-//		        HashMap<String,String> mapa = new HashMap<String, String>();
-		        
-//		        mapa.put("hola","hola");
-//			    mapa.put("hola2","hola2");
-//		        list.add(mapa);
-//			    list.add(mapa);
-//			    vuln.put("8/tcp", list);
-//			    list = new ArrayList<HashMap<String,String>>();
-//			    list.add(mapa);
-//			    vuln.put("9/tcp", list);
-//				nmap.setVulnerabilities(vuln);
 				return nmapRepository.save(nmap);
 			}
 //			case "serviceso":{

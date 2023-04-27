@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class ScanningScriptService {
+public abstract class ScanningScriptService {
 	public String processScript(String script) throws IOException{
         ProcessBuilder processBuilder = new ProcessBuilder();
         

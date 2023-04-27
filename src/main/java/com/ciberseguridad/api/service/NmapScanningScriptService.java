@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,29 +11,58 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class NmapScanningScriptService {
+public class NmapScanningScriptService extends ScanningScriptService{
 	
-	public String processScript(String script) throws IOException{
+	public List<HashMap<String,String>> processTCPPortScript(String script) throws IOException{
 		ProcessBuilder processBuilder = new ProcessBuilder();
 		
-	    //processBuilder.command("cmd.exe", "/c", script);
+		//processBuilder.command("cmd.exe", "/c", script);
 	    processBuilder.command("bash", "-c", script);
 	
 	    try {
 	
 	        Process process = processBuilder.start();
 	
-	        StringBuilder output = new StringBuilder();
+	        List<HashMap<String,String>> ports = new ArrayList<HashMap<String,String>>();
+	        HashMap<String,String> map = new HashMap<String, String>();
 	
 	        BufferedReader reader = new BufferedReader(
 	                new InputStreamReader(process.getInputStream()));
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
-	            output.append(line + "\n");
+	        	if(line.contains("/tcp")) {
+	        		String featuresArr[] = line.split(" ");
+	        		int iter = 0;
+	        		for(String feature: featuresArr) {
+	        			if(!feature.equals(" ")) {
+	        				switch(iter) {
+	        					case 0:{
+	        						map.put("Port", feature);
+	        						iter++;
+	        						break;
+	        					}
+	        					case 1:{
+	        						map.put("State", feature);
+	        						iter++;
+	        						break;
+	        					}
+	        					case 2:{
+	        						map.put("Service", feature);
+	        						iter++;
+	        						break;
+	        					}
+	        					case 3:{
+	        						map.put("Version", feature);
+	        						iter++;
+	        						break;
+	        					}
+	        				}
+	        			}
+	        		}
+	        	}
 	        }
-	
-	        return output.toString();
+	        return ports;
 	
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -53,9 +81,9 @@ public class NmapScanningScriptService {
 	        Process process = processBuilder.start();
 	
 	        HashMap<String,List<HashMap<String,String>>> vulnerabilities = new HashMap<String,List<HashMap<String,String>>>();
-	        String portId = "";
-	        List<HashMap<String,String>> list = new LinkedList<HashMap<String,String>>();
+	        List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	        HashMap<String,String> map = new HashMap<String, String>();
+	        String portId = "";
 	
 	        BufferedReader reader = new BufferedReader(
 	                new InputStreamReader(process.getInputStream()));
@@ -69,22 +97,17 @@ public class NmapScanningScriptService {
 					map.put("id", substrings[0]);
 					map.put("evaluation", substrings[1]);
 					list.add(map);
+					map = new HashMap<String, String>();
 	        	}
 	        	else if(line.contains("/tcp")) {
-	        		String substrings[] = line.split(" ");
-		            for(String i: substrings){
-	                    if(i.contains("/tcp")){
-	                        if(!(portId.equals(""))) {
-	                        	vulnerabilities.put(portId,list);
-	                        	list = new LinkedList<HashMap<String,String>>();
-	                        	map = new HashMap<String, String>();
-	                        	portId = i;
-	                        }
-	                        else {
-	                        	portId = i;
-	                        }
-	                    }
-	                }
+					if (!(portId.equals("")) && !(list.isEmpty())) {
+						vulnerabilities.put(portId, list);
+						list = new ArrayList<HashMap<String, String>>();
+						map = new HashMap<String, String>();
+						portId = line.split(" ")[0];
+					} else {
+						portId = line.split(" ")[0];
+					}
 	        	}
 	        }
 	        return vulnerabilities;
@@ -94,4 +117,6 @@ public class NmapScanningScriptService {
 	        throw e;
 	    }
 	}
+	
+	
 }
