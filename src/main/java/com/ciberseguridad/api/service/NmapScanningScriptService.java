@@ -61,15 +61,13 @@ public class NmapScanningScriptService {
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
-	        	if(line.contains("CVE-")) {
-	        		String substrings[] = line.split(" ");
-	        		for(int i = 0; i<substrings.length; i++){
-						if(substrings[i].contains("CVE-") && !substrings[i].contains("/CVE-") && (i+4<substrings.length)) {
-							map.put("id", substrings[i]);
-							map.put("evaluation", substrings[i+4]);
-							list.add(map);
-						}
-	        		}
+	        	if(line.contains("CVE-") && line.contains("https://vulners.com/cve")) {
+	        		line = line.substring(line.indexOf("CVE-"),line.indexOf("https://vulners.com/cve"));
+	        		@SuppressWarnings("deprecation")
+					String substrings[] = line.split(new Character((char) 9).toString());
+					map.put("id", substrings[0]);
+					map.put("evaluation", substrings[1]);
+					list.add(map);
 	        	}
 	        	else if(line.contains("/tcp")) {
 	        		String substrings[] = line.split(" ");
