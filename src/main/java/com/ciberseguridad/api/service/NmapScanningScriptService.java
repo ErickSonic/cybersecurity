@@ -35,31 +35,32 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        		String featuresArr[] = line.split(" ");
 	        		int iter = 0;
 	        		for(String feature: featuresArr) {
-	        			if(!feature.equals(" ")) {
+	        			if(!(feature == "")) {
 	        				switch(iter) {
 	        					case 0:{
-	        						map.put("Port", feature);
+	        						map.put("port", feature);
 	        						iter++;
 	        						break;
 	        					}
 	        					case 1:{
-	        						map.put("State", feature);
+	        						map.put("state", feature);
 	        						iter++;
 	        						break;
 	        					}
 	        					case 2:{
-	        						map.put("Service", feature);
+	        						map.put("service", feature);
 	        						iter++;
 	        						break;
 	        					}
 	        					case 3:{
-	        						map.put("Version", feature);
+	        						map.put("version", feature);
 	        						iter++;
 	        						break;
 	        					}
 	        				}
 	        			}
 	        		}
+	        		ports.add(map);
 	        	}
 	        }
 	        return ports;
