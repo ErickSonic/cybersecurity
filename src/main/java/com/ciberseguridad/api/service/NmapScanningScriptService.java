@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class NmapScanningScriptService {
 	
 	        HashMap<String,List<HashMap<String,String>>> vulnerabilities = new HashMap<String,List<HashMap<String,String>>>();
 	        String portId = "";
-	        List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+	        List<HashMap<String,String>> list = new LinkedList<HashMap<String,String>>();
 	        HashMap<String,String> map = new HashMap<String, String>();
 	
 	        BufferedReader reader = new BufferedReader(
@@ -75,7 +76,7 @@ public class NmapScanningScriptService {
 	                    if(i.contains("/tcp")){
 	                        if(!(portId.equals(""))) {
 	                        	vulnerabilities.put(portId,list);
-	                        	list = new ArrayList<HashMap<String,String>>();
+	                        	list = new LinkedList<HashMap<String,String>>();
 	                        	map = new HashMap<String, String>();
 	                        	portId = i;
 	                        }
