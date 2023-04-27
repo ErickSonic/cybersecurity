@@ -53,8 +53,8 @@ public class NmapService {
 				NmapPorts nmap = new NmapPorts();
 				nmap.setScriptId("tcp");
 				nmap.setScriptDescription("Escaneo de puertos TCP");
-				nmap.setResultado(scriptService.processScript("nmap -sS -sV -T4 " + req.getDomain()));
-				nmap.setPorts(scriptService.processTCPPortScript("nmap -sS -sV -T4 " + req.getDomain()));
+				nmap.setResultado(scriptService.processScript("sudo nmap -sS -sV -T4 " + req.getDomain()));
+				nmap.setPorts(scriptService.processTCPPortScript("sudo nmap -sS -sV -T4 " + req.getDomain()));
 				return nmapRepository.save(nmap);
 			}
 			case "vulnerabilities":{
