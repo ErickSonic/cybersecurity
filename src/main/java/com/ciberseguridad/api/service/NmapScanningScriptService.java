@@ -35,6 +35,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        		String featuresArr[] = line.split(" ");
 	        		int iter = 0;
 	        		String versionFeatures = "";
+	        		boolean version = false;
 	        		for(int i = 0; i < featuresArr.length; i++) {
 	        			if(!(featuresArr[i] == "")) {
 	        				switch(iter) {
@@ -56,6 +57,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        					case 3:{
 	        						versionFeatures += featuresArr[i];
 	        						iter++;
+	        						version = true;
 	        						break;
 	        					}
 	        					case 4:{
@@ -65,7 +67,9 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        				}
 	        			}
 	        		}
-	        		map.put("version", versionFeatures);
+	        		if(version) {
+	        			map.put("version", versionFeatures);
+	        		}
 	        		ports.add(map);
 	        		map = new HashMap<String, String>();
 	        	}
