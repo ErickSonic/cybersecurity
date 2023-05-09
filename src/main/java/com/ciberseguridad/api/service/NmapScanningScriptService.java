@@ -131,6 +131,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        	else if(line.contains("/tcp")) {
 					if (!(portId.equals("")) && !(list.isEmpty())) {
 						map.put("average", Double.toString(localAverage / (double) localCount));
+						localAverage = 0.0; localCount = 0;
 						list.add(map);
 						vulnerabilities.put(portId, list);
 						list = new ArrayList<HashMap<String, String>>();
