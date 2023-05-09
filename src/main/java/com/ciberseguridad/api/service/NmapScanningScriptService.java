@@ -96,6 +96,10 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	        HashMap<String,String> map = new HashMap<String, String>();
 	        String portId = "";
+	        double globalAverage = 0.0;
+	        double localAverage = 0.0;
+	        int globalCount = 0;
+	        int localCount = 0;
 	
 	        BufferedReader reader = new BufferedReader(
 	                new InputStreamReader(process.getInputStream()));
@@ -108,11 +112,26 @@ public class NmapScanningScriptService extends ScanningScriptService{
 					String substrings[] = line.split(new Character((char) 9).toString());
 					map.put("id", substrings[0]);
 					map.put("evaluation", substrings[1]);
+					globalAverage += Double.parseDouble(substrings[1]); localAverage += Double.parseDouble(substrings[1]); globalCount++; localCount++;
 					list.add(map);
 					map = new HashMap<String, String>();
 	        	}
+	        	else if(line.contains("CVE:")) {
+	        		String substring = line.substring(line.indexOf("CVE:"),line.length()-1);
+	        		substring = substring.substring(3,substring.indexOf(" "));
+	        		map.put("id", substring);
+	        		if((line = reader.readLine()).contains("Risk factor")) {
+	        			line = line.replace("\\D+", "");
+	        			map.put("evaluation",line);
+	        			globalAverage += Double.parseDouble(line); localAverage += Double.parseDouble(line); globalCount++; localCount++;
+	        		}
+	        		list.add(map);
+	        		map = new HashMap<String, String>();
+	        	}
 	        	else if(line.contains("/tcp")) {
 					if (!(portId.equals("")) && !(list.isEmpty())) {
+						map.put("average", Double.toString(localAverage / (double) localCount));
+						list.add(map);
 						vulnerabilities.put(portId, list);
 						list = new ArrayList<HashMap<String, String>>();
 						map = new HashMap<String, String>();
@@ -122,6 +141,10 @@ public class NmapScanningScriptService extends ScanningScriptService{
 					}
 	        	}
 	        }
+	        list = new ArrayList<HashMap<String, String>>();
+	        map.put("average", Double.toString(globalAverage / (double) globalCount));
+	        list.add(map);
+	        vulnerabilities.put("average", list);
 	        return vulnerabilities;
 	
 	    } catch (IOException e) {

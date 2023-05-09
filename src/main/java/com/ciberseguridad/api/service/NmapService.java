@@ -75,7 +75,7 @@ public class NmapService {
 //			case "udp":{
 //				nmap.setScriptId("udp");
 //				nmap.setScriptDescription("Escaneo de puertos UDP");
-//				nmap.setResultado(scriptService.processScript("nmap -sU " + req.getDomain()));
+//				nmap.setResultado(scriptService.processScript("sudo nmap -sU " + req.getDomain()));
 //				break;
 //			}
 //			case "internalN":{
