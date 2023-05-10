@@ -13,7 +13,7 @@ import java.io.IOException;
 @Service
 public class NmapScanningScriptService extends ScanningScriptService{
 	
-	public List<HashMap<String,String>> processTCPPortScript(String script) throws IOException{
+	public Object[] processTCPPortScript(String script) throws IOException{
 		ProcessBuilder processBuilder = new ProcessBuilder();
 		
 		//processBuilder.command("cmd.exe", "/c", script);
@@ -23,14 +23,17 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	
 	        Process process = processBuilder.start();
 	
+	        Object[] results = new Object[2];
 	        List<HashMap<String,String>> ports = new ArrayList<HashMap<String,String>>();
 	        HashMap<String,String> map = new HashMap<String, String>();
+	        StringBuilder output = new StringBuilder();
 	
 	        BufferedReader reader = new BufferedReader(
 	                new InputStreamReader(process.getInputStream()));
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
+	        	output.append(line + "\n");
 	        	if(line.contains("/tcp")) {
 	        		String featuresArr[] = line.split(" ");
 	        		int iter = 0;
@@ -74,7 +77,9 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        		map = new HashMap<String, String>();
 	        	}
 	        }
-	        return ports;
+	        results[0] = output.toString();
+	        results[1] = ports;
+	        return results;
 	
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -82,7 +87,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	    }
 	}
 	
-	public HashMap<String,List<HashMap<String,String>>> processVulnerabilitiesScript(String script) throws IOException{
+	public Object[] processVulnerabilitiesScript(String script) throws IOException{
 		ProcessBuilder processBuilder = new ProcessBuilder();
 		
 		//processBuilder.command("cmd.exe", "/c", script);
@@ -92,9 +97,11 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	
 	        Process process = processBuilder.start();
 	
+	        Object[] results = new Object[2];
 	        HashMap<String,List<HashMap<String,String>>> vulnerabilities = new HashMap<String,List<HashMap<String,String>>>();
 	        List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	        HashMap<String,String> map = new HashMap<String, String>();
+	        StringBuilder output = new StringBuilder();
 	        String portId = "";
 	        double globalAverage = 0.0;
 	        double localAverage = 0.0;
@@ -106,6 +113,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
+	        	output.append(line + "\n");
 	        	if(line.contains("CVE-") && line.contains("https://vulners.com/cve")) {
 	        		line = line.substring(line.indexOf("CVE-"),line.indexOf("https://vulners.com/cve"));
 	        		@SuppressWarnings("deprecation")
@@ -130,6 +138,7 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        			map.put("evaluation",line);
 	        			globalAverage += Double.parseDouble(line); localAverage += Double.parseDouble(line); globalCount++; localCount++;
 	        		}
+	        		output.append(line + "\n");
 	        		list.add(map);
 	        		map = new HashMap<String, String>();
 	        	}
@@ -151,7 +160,9 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        map.put("average", Double.toString(globalAverage / (double) globalCount));
 	        list.add(map);
 	        vulnerabilities.put("average", list);
-	        return vulnerabilities;
+	        results[0] = output.toString();
+	        results[1] = vulnerabilities;
+	        return results;
 	
 	    } catch (IOException e) {
 	        e.printStackTrace();

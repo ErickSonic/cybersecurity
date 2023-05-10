@@ -47,22 +47,25 @@ public class NmapService {
 		nmapRepository.deleteById(id);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Nmap saveScan(String scanType, RequestModel req) throws IOException {
 		switch(scanType) {
 			case "tcp":{
 				NmapPorts nmap = new NmapPorts();
+				Object[] processedInfo = scriptService.processTCPPortScript("nmap -Pn -sV --script vuln " + req.getDomain());
 				nmap.setScriptId("tcp");
 				nmap.setScriptDescription("Escaneo de puertos TCP");
-				nmap.setResultado(scriptService.processScript("sudo nmap -sS -sV -T4 " + req.getDomain()));
-				nmap.setPorts(scriptService.processTCPPortScript("sudo nmap -sS -sV -T4 " + req.getDomain()));
+				nmap.setResultado(processedInfo[0].toString());
+				nmap.setPorts((List<HashMap<String, String>>) processedInfo[1]);
 				return nmapRepository.save(nmap);
 			}
 			case "vulnerabilities":{
 				NmapVulnerabilities nmap = new NmapVulnerabilities();
+				Object[] processedInfo = scriptService.processVulnerabilitiesScript("nmap -Pn -sV --script vuln " + req.getDomain());
 				nmap.setScriptId("vulnerabilities");
 			    nmap.setScriptDescription("Escaneo de vulnerabilidades");
-				nmap.setResultado(scriptService.processScript("nmap -Pn -sV --script vuln " + req.getDomain()));
-				nmap.setVulnerabilities(scriptService.processVulnerabilitiesScript("nmap -Pn -sV --script vuln " + req.getDomain()));
+				nmap.setResultado(processedInfo[0].toString());
+				nmap.setVulnerabilities((HashMap<String, List<HashMap<String, String>>>) processedInfo[1]);
 //				nmap.setResultado(scriptService.processScript("ping -n 3 " + req.getDomain()));
 				return nmapRepository.save(nmap);
 			}
