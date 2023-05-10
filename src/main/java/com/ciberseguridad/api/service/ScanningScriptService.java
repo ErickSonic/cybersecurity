@@ -26,7 +26,7 @@ public abstract class ScanningScriptService {
 	
 	        String line;
 	        while ((line = reader.readLine()) != null) {
-	            output.append(line + System.getProperty("line.separator"));
+	            output.append(line + "\n");
 	        }
 	
 	        return output.toString();
