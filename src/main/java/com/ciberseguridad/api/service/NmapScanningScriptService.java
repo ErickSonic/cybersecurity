@@ -127,10 +127,10 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        	else if(line.contains("CVE:")) {
 	        		String substring = line.substring(line.indexOf("CVE:"),line.length()-1);
 	        		if(substring.indexOf(" ") != -1) {
-	        			substring = substring.substring(3,substring.indexOf(" "));
+	        			substring = substring.substring(4,substring.indexOf(" "));
 	        		}
 	        		else {
-	        			substring = substring.substring(3,substring.length()-1);
+	        			substring = substring.substring(4,substring.length()-1);
 	        		}
 	        		map.put("id", substring);
 	        		if((line = reader.readLine()).contains("Risk factor")) {
