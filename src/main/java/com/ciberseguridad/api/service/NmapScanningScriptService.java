@@ -134,8 +134,9 @@ public class NmapScanningScriptService extends ScanningScriptService{
 	        		}
 	        		map.put("id", substring);
 	        		if((line = reader.readLine()).contains("Risk factor")) {
-	        			line = line.replaceAll("[^0-9.]", "");
-	        			map.put("evaluation",line);
+	        			String evaluation = line.substring(line.indexOf("HIGH")-5,line.indexOf("(HIGH)"));
+	        			evaluation = evaluation.replaceAll("[^0-9.]", "");
+	        			map.put("evaluation",evaluation);
 	        			globalAverage += Double.parseDouble(line); localAverage += Double.parseDouble(line); globalCount++; localCount++;
 	        		}
 	        		output.append(line + "\n");
